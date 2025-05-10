@@ -5,9 +5,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
-import { loginUser } from '../features/auth/authApi';
 import { AuthResponse, LoginPayload } from '../types/auth';
 import ForgotPasswordModal from '../components/ForgotPasswordModal';
+import { loginUser } from '../features/auth/authAPI';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -79,14 +79,16 @@ const Login: React.FC = () => {
               required
             />
           </div>
-
-          <button
-            type="submit"
-            disabled={isPending}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300"
-          >
-            {isPending ? 'Logging in...' : 'Login'}
-          </button>
+        <button
+  type="submit"
+  disabled={isPending}
+  className="relative w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
+>
+  Register
+  {isPending && (
+    <span className="absolute right-4 loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+  )}
+</button>
         </form>
 
         <div className="flex justify-between items-center mt-4 text-sm text-gray-600">

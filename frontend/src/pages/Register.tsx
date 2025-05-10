@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { AuthResponse, RegisterPayload } from '../types/auth'; 
-import { registerUser } from '../features/auth/authApi';
+import { registerUser } from '../features/auth/authAPI';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -104,16 +104,21 @@ const Register: React.FC = () => {
           </div>
 
           {/* Submit */}
+          
           <button
-            type="submit"
-            disabled={isPending}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300"
-          >
-            {isPending ? 'Registering...' : 'Register'}
-          </button>
-        </form>
+  type="submit"
+  disabled={isPending}
+  className="relative w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
+>
+  Register
+  {isPending && (
+    <span className="absolute right-4 loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+  )}
+</button>
 
-        <p className="text-sm text-gray-600 mt-6">
+        </form>
+      
+    <p className="text-sm text-gray-600 mt-6">
           Already have an account?{' '}
           <span
             onClick={() => navigate('/login')}

@@ -3,7 +3,7 @@ import { RiLockPasswordLine } from 'react-icons/ri';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import { resetPassword } from '../features/auth/authApi';
+import { resetPassword } from '../features/auth/authAPI';
 import { AuthResponse } from '../types/auth';
 import { AxiosError } from 'axios';
 

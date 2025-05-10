@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { requestResetPassword } from '../features/auth/authApi';
+import { requestResetPassword } from '../features/auth/authAPI';
 import { AxiosError } from 'axios';
 
 interface ForgotPasswordModalProps {
@@ -53,7 +53,12 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
               disabled={isPending}
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
-              {isPending ? 'Sending...' : 'Send Request'}
+              <span className="flex items-center gap-2">
+          Send Request
+        {isPending && (
+      <span className="loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+    )}
+  </span>
             </button>
           </div>
         </form>
