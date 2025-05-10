@@ -16,3 +16,14 @@ export const requestResetPassword = async ({ email }: { email: string }) => {
   return response.data;
 };
 
+export const resetPassword = async ({token,newPassword,}: {
+  token?: string;
+  newPassword: string;
+}) => {
+  const response = await SERVER_URL.post(`/user/reset-password/${token}`, {
+    password: newPassword,
+  });
+  return response.data;
+};
+
+
