@@ -12,7 +12,7 @@ export const loginUser = async (data: LoginPayload): Promise<AuthResponse> => {
 };
 
 export const requestResetPassword = async ({ email }: { email: string }) => {
-  const response = await SERVER_URL.post('/request-password-reset', { email });
+  const response = await SERVER_URL.post('/user/request-reset-password', { email });
   return response.data;
 };
 
