@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { requestResetPassword } from '../features/auth/authAPI';
+import { requestResetPassword } from '../features/auth/authApi';
 import { AxiosError } from 'axios';
 
 interface ForgotPasswordModalProps {

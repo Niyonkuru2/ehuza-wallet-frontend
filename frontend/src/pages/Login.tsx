@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
-import { loginUser } from '../features/auth/authAPI';
+import { loginUser } from '../features/auth/authApi';
 import { AuthResponse, LoginPayload } from '../types/auth';
 import ForgotPasswordModal from '../components/ForgotPasswordModal';
 
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data: AuthResponse) => {
-      toast.success(data.message || 'Login successful!');
+      toast.success(data.message);
       navigate('/dashboard');
     },
     onError: (error: AxiosError<{ message: string }>) => {

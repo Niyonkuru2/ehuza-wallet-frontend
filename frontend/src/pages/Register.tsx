@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { AuthResponse, RegisterPayload } from '../types/auth'; 
-import { registerUser } from '../features/auth/authAPI';
+import { registerUser } from '../features/auth/authApi';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();

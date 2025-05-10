@@ -3,7 +3,9 @@ import { RiLockPasswordLine } from 'react-icons/ri';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import { resetPassword } from '../features/auth/authAPI';
+import { resetPassword } from '../features/auth/authApi';
+import { AuthResponse } from '../types/auth';
+import { AxiosError } from 'axios';
 
 const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
@@ -14,13 +16,14 @@ const ResetPassword: React.FC = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => resetPassword({ token, newPassword }),
-    onSuccess: () => {
-      toast.success('Password has been reset successfully');
+    onSuccess: (data: AuthResponse) => {
+      toast.success(data.message)
       navigate('/login');
     },
-    onError: () => {
-      toast.error('Failed to reset password. Please try again.');
-    },
+    onError: (error: AxiosError<{ message: string }>) => {
+          const msg = error.response?.data?.message;
+          toast.error(msg);
+        },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -73,37 +76,20 @@ const ResetPassword: React.FC = () => {
           </div>
 
           {/* Submit */}
-          <button
-  type="submit"
-  disabled={isPending}
-  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300 flex items-center justify-center gap-2"
->
-  <span className="flex items-center gap-2">
-    Reset Password
+            
+         <button
+            type="submit"
+        disabled={isPending}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300 flex items-center justify-center gap-2"
+        >
+      <span className="flex items-center gap-2">
+      Reset Password
     {isPending && (
-      <svg
-        className="animate-spin h-5 w-5 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
-        ></path>
-      </svg>
+      <span className="loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
     )}
   </span>
 </button>
+
 
         </form>
       </div>
