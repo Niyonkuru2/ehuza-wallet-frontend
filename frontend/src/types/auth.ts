@@ -11,7 +11,7 @@ export interface LoginPayload {
   password: string;
 }
 
-// register Auth Response
+//Auth Response
 export interface AuthResponse {
   success: boolean;
   message: string;

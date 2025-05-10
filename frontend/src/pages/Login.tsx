@@ -8,10 +8,12 @@ import { AxiosError } from 'axios';
 import { AuthResponse, LoginPayload } from '../types/auth';
 import ForgotPasswordModal from '../components/ForgotPasswordModal';
 import { loginUser } from '../features/auth/authAPI';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../features/auth/authSlice';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<LoginPayload>({
     email: '',
     password: '',
@@ -22,9 +24,14 @@ const Login: React.FC = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data: AuthResponse) => {
-      toast.success(data.message);
-      navigate('/dashboard');
-    },
+  if (data.token) {
+    dispatch(setToken(data.token));
+    toast.success(data.message);
+    navigate('/dashboard');
+  } else {
+    toast.error('Login successful, but no token returned!');
+  }
+},
     onError: (error: AxiosError<{ message: string }>) => {
       const msg = error.response?.data?.message || 'Login failed!';
       toast.error(msg);
