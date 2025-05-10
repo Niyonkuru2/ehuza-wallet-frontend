@@ -80,10 +80,10 @@ const Login: React.FC = () => {
             />
           </div>
         <button
-  type="submit"
-  disabled={isPending}
-  className="relative w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
->
+    type="submit"
+    disabled={isPending}
+    className="relative w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
+   >
   Register
   {isPending && (
     <span className="absolute right-4 loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
