@@ -105,7 +105,7 @@ const Login: React.FC = () => {
               onClick={() => navigate('/register')}
               className="text-blue-600 font-medium cursor-pointer"
             >
-              Register
+              Login
             </span>
           </span>
           <span

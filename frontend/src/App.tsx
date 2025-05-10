@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoutes';
 const App = () => {
   return (
     <div>
@@ -14,7 +15,7 @@ const App = () => {
           <Route path="/register" element={<Register/>} />
            <Route path="/login" element={<Login/>} />
            <Route path="/reset-password/:token" element={<ResetPassword/>} />
-           <Route path="/dashboard" element={<Dashboard/>} />
+           <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         </Routes>
         </div>
     </div>
