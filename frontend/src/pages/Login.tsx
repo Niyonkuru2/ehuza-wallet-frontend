@@ -47,7 +47,7 @@ const Login: React.FC = () => {
         <div className="flex items-center justify-center gap-3 mb-6">
           <img src="/wallet (1).png" alt="E-Huza Wallet Logo" className="h-12 w-12" />
           <h1 className="text-3xl font-bold text-gray-800 flex-col">
-            <span className="text-blue-600">E-HUZA</span> <span>WALLET</span>
+            <span className="text-blue-600">eHuza</span><br /> wallet
           </h1>
         </div>
 

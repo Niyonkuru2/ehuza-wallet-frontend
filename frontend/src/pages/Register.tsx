@@ -54,8 +54,7 @@ const Register: React.FC = () => {
             className="h-12 w-12"
           />
           <h1 className="text-3xl font-bold text-gray-800 flex-col">
-            <span className="text-blue-600">E-HUZA</span> <br />
-            <span>WALLET</span>
+            <span className="text-blue-600">eHuza</span><br /> wallet
           </h1>
         </div>
 

@@ -39,7 +39,7 @@ const ResetPassword: React.FC = () => {
         <div className="flex items-center justify-center gap-3 mb-6">
           <img src="/wallet (1).png" alt="Logo" className="h-12 w-12" />
           <h1 className="text-3xl font-bold text-gray-800">
-            <span className="text-blue-600">E-HUZA</span> WALLET
+            <span className="text-blue-600">eHuza</span><br /> wallet
           </h1>
         </div>
 
