@@ -1,3 +1,4 @@
+// src/pages/Login.tsx
 import React, { useState } from 'react';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
@@ -7,22 +8,23 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { loginUser } from '../features/auth/authAPI';
 import { AuthResponse, LoginPayload } from '../types/auth';
+import ForgotPasswordModal from '../components/ForgotPasswordModal';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  // State for form inputs
   const [formData, setFormData] = useState<LoginPayload>({
     email: '',
     password: '',
   });
 
-  // React Query mutation
+  const [showForgot, setShowForgot] = useState(false);
+
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data: AuthResponse) => {
       toast.success(data.message || 'Login successful!');
-      navigate('/dashboard'); // Change path if needed
+      navigate('/dashboard');
     },
     onError: (error: AxiosError<{ message: string }>) => {
       const msg = error.response?.data?.message || 'Login failed!';
@@ -30,12 +32,10 @@ const Login: React.FC = () => {
     },
   });
 
-  // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     mutate(formData);
@@ -46,11 +46,7 @@ const Login: React.FC = () => {
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-6">
-          <img
-            src="/wallet (1).png"
-            alt="E-Huza Wallet Logo"
-            className="h-12 w-12"
-          />
+          <img src="/wallet (1).png" alt="E-Huza Wallet Logo" className="h-12 w-12" />
           <h1 className="text-3xl font-bold text-gray-800 flex-col">
             <span className="text-blue-600">E-HUZA</span> <span>WALLET</span>
           </h1>
@@ -59,7 +55,6 @@ const Login: React.FC = () => {
         <h2 className="text-xl font-semibold text-gray-700 mb-6">Login to your account</h2>
 
         <form className="space-y-4 text-left" onSubmit={handleSubmit}>
-          {/* Email */}
           <div className="relative">
             <MdEmail className="absolute left-3 top-3.5 text-gray-400" />
             <input
@@ -73,7 +68,6 @@ const Login: React.FC = () => {
             />
           </div>
 
-          {/* Password */}
           <div className="relative">
             <RiLockPasswordLine className="absolute left-3 top-3.5 text-gray-400" />
             <input
@@ -87,7 +81,6 @@ const Login: React.FC = () => {
             />
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={isPending}
@@ -97,13 +90,26 @@ const Login: React.FC = () => {
           </button>
         </form>
 
-        <p className="text-sm text-gray-600 mt-6">
-          Don’t have an account?{' '}
-          <span onClick={() => navigate('/register')} className="text-blue-600 font-medium cursor-pointer">
-            Register
+        <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
+          <span>
+            Don’t have an account?{' '}
+            <span
+              onClick={() => navigate('/register')}
+              className="text-blue-600 font-medium cursor-pointer"
+            >
+              Register
+            </span>
           </span>
-        </p>
+          <span
+            onClick={() => setShowForgot(true)}
+            className="text-blue-600 font-medium cursor-pointer"
+          >
+            Forgot Password?
+          </span>
+        </div>
       </div>
+
+      {showForgot && <ForgotPasswordModal onClose={() => setShowForgot(false)} />}
     </div>
   );
 };
