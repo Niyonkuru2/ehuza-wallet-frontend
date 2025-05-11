@@ -36,4 +36,10 @@ export const getUserProfile = async (): Promise<UserProfile> => {
   return response.data.profileInfo;
 };
 
+// Update user profile api call
+export const updateUserProfile = async (data: Partial<UserProfile>): Promise<UserProfile> => {
+  const response = await SERVER_URL.put('/user/update', data);
+  return response.data.updatedProfile;
+};
+
 
