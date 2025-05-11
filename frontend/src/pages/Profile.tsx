@@ -6,6 +6,7 @@ import { getUserProfile, updateUserProfile } from '../features/auth/authAPI';
 import { UserProfile } from '../types/auth';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
+
 const ProfileInfo: React.FC = () => {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -42,9 +43,9 @@ const ProfileInfo: React.FC = () => {
       setConfirmPassword('');
     },
     onError: (error: AxiosError<{ message: string }>) => {
-          const msg = error.response?.data?.message;
-          toast.error(msg);
-    }
+      const msg = error.response?.data?.message;
+      toast.error(msg);
+    },
   });
 
   const handleUpdate = () => {
@@ -75,26 +76,23 @@ const ProfileInfo: React.FC = () => {
   };
 
   if (isPending) {
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
-    </div>
-  );
-}
-
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex">
-      <Sidebar user={{ name, imageUrl, email, userId: '', createdAt: '',newPassword }} />
+      <Sidebar user={{ name, imageUrl, email, userId: '', createdAt: '', newPassword }} />
       <div className="flex-1 bg-gray-50 min-h-screen">
-        <Header user={{ name, imageUrl, email, userId: '', createdAt: '',newPassword }} />
+        <Header user={{ name, imageUrl, email, userId: '', createdAt: '', newPassword }} />
         <div className="max-w-2xl mx-auto mt-10 bg-white rounded-2xl shadow p-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800">Profile Information</h2>
             <button
-              onClick={() => {
-                setIsEdit(!isEdit);
-              }}
+              onClick={() => setIsEdit(!isEdit)}
               className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700"
             >
               {isEdit ? 'Cancel' : 'Update Profile'}
@@ -103,7 +101,9 @@ const ProfileInfo: React.FC = () => {
 
           <div className="flex items-center mb-6">
             <div
-              className={`w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 ${isEdit ? 'cursor-pointer' : ''}`}
+              className={`w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 ${
+                isEdit ? 'cursor-pointer' : ''
+              }`}
               onClick={() => isEdit && fileInputRef.current?.click()}
             >
               <img
@@ -116,7 +116,7 @@ const ProfileInfo: React.FC = () => {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              placeholder='image'
+              placeholder="image"
               onChange={handleImageUpload}
               className="hidden"
             />
@@ -127,14 +127,14 @@ const ProfileInfo: React.FC = () => {
             </div>
           </div>
 
-          {isEdit ? (
+          {isEdit && (
             <>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">Full Name</label>
                 <input
                   type="text"
                   value={name}
-                  placeholder={name}
+                  placeholder="Full Name"
                   onChange={(e) => setName(e.target.value)}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -145,7 +145,7 @@ const ProfileInfo: React.FC = () => {
                 <input
                   type="email"
                   value={email}
-                  placeholder={email}
+                  placeholder="Email"
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -154,12 +154,13 @@ const ProfileInfo: React.FC = () => {
               <hr className="my-4" />
 
               <h3 className="text-lg font-semibold text-gray-800 mb-2">Change Password</h3>
+
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">New Password</label>
                 <input
                   type="password"
                   value={newPassword}
-                  placeholder='newPassword'
+                  placeholder="New Password"
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -170,27 +171,24 @@ const ProfileInfo: React.FC = () => {
                 <input
                   type="password"
                   value={confirmPassword}
-                  placeholder='confirmPassword'
+                  placeholder="Confirm Password"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              
-
-        <button
-      onClick={handleUpdate}
-      className="w-full bg-[#060744] hover:bg-[#060872] text-white font-semibold py-2 rounded-lg transition duration-300 relative"
-     >
-     {mutation.isPending ? (
-    <span className="loader inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin absolute right-4 top-1/2 transform -translate-y-1/2"></span>
-     ) : (
-    'Save Changes'
-   )}
-   </button>
-
+              <button
+                onClick={handleUpdate}
+                disabled={mutation.isPending}
+                className="relative w-full bg-[#060744] hover:bg-[#060872] text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
+              >
+                Save Changes
+                {mutation.isPending &&(
+                  <span className="absolute right-4 loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                )}
+              </button>
             </>
-          ) : null}
+          )}
         </div>
       </div>
     </div>
