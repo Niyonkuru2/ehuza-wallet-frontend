@@ -25,6 +25,7 @@ export interface UserProfile {
   email: string;
   imageUrl: string;
   userId: string;
+  newPassword: string;
   createdAt: string;
 }
 

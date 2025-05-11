@@ -2,24 +2,27 @@ import React, { useEffect, useRef, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getUserProfile, updateUserProfile } from '../features/auth/authAPI'
+import { getUserProfile, updateUserProfile } from '../features/auth/authAPI';
 import { UserProfile } from '../types/auth';
-
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 const ProfileInfo: React.FC = () => {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { data: profile, isLoading } = useQuery<UserProfile>({
+  const { data: profile, isPending } = useQuery<UserProfile>({
     queryKey: ['userProfile'],
     queryFn: getUserProfile,
     staleTime: 5 * 60 * 1000,
   });
 
-  const [editMode, setEditMode] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [joinedAt, setJoinedAt] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
     if (profile) {
@@ -34,13 +37,28 @@ const ProfileInfo: React.FC = () => {
     mutationFn: updateUserProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfile'] });
-      alert('Profile updated!');
-      setEditMode(false);
+      setIsEdit(false);
+      setNewPassword('');
+      setConfirmPassword('');
     },
+    onError: (error: AxiosError<{ message: string }>) => {
+          const msg = error.response?.data?.message;
+          toast.error(msg);
+    }
   });
 
   const handleUpdate = () => {
-    mutation.mutate({ name, email, imageUrl });
+    if (newPassword && newPassword !== confirmPassword) {
+      toast.error('New passwords do not match');
+      return;
+    }
+
+    mutation.mutate({
+      name,
+      email,
+      imageUrl,
+      newPassword: newPassword ? newPassword : undefined,
+    });
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,28 +74,37 @@ const ProfileInfo: React.FC = () => {
     }
   };
 
-  if (isLoading) return <p className="text-center mt-10">Loading profile...</p>;
+  if (isPending) {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+    </div>
+  );
+}
+
 
   return (
     <div className="flex">
-      <Sidebar user={{ name, imageUrl, email, userId: '', createdAt:'' }} />
+      <Sidebar user={{ name, imageUrl, email, userId: '', createdAt: '',newPassword }} />
       <div className="flex-1 bg-gray-50 min-h-screen">
-        <Header user={{ name, imageUrl, email, userId: '', createdAt:'' }} />
+        <Header user={{ name, imageUrl, email, userId: '', createdAt: '',newPassword }} />
         <div className="max-w-2xl mx-auto mt-10 bg-white rounded-2xl shadow p-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800">Profile Information</h2>
             <button
-              onClick={() => setEditMode(!editMode)}
+              onClick={() => {
+                setIsEdit(!isEdit);
+              }}
               className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700"
             >
-              {editMode ? 'Cancel' : 'Update Profile'}
+              {isEdit ? 'Cancel' : 'Update Profile'}
             </button>
           </div>
 
           <div className="flex items-center mb-6">
             <div
-              className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 cursor-pointer"
-              onClick={() => editMode && fileInputRef.current?.click()}
+              className={`w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 ${isEdit ? 'cursor-pointer' : ''}`}
+              onClick={() => isEdit && fileInputRef.current?.click()}
             >
               <img
                 src={imageUrl || '/noavatar.jpg'}
@@ -89,7 +116,7 @@ const ProfileInfo: React.FC = () => {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              placeholder="image"
+              placeholder='image'
               onChange={handleImageUpload}
               className="hidden"
             />
@@ -100,38 +127,70 @@ const ProfileInfo: React.FC = () => {
             </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">Full Name</label>
-            <input
-              type="text"
-              value={name}
-              readOnly={!editMode}
-              placeholder="Enter full name"
-              onChange={(e) => setName(e.target.value)}
-              className={`w-full p-3 border rounded-xl ${editMode ? 'bg-white' : 'bg-gray-100'}`}
-            />
-          </div>
+          {isEdit ? (
+            <>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">Full Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  placeholder={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-          <div className="mb-6">
-            <label className="block text-gray-700 font-medium mb-2">Email</label>
-            <input
-              type="email"
-              value={email}
-              readOnly={!editMode}
-              placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
-              className={`w-full p-3 border rounded-xl ${editMode ? 'bg-white' : 'bg-gray-100'}`}
-            />
-          </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  placeholder={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-          {editMode && (
-            <button
-              onClick={handleUpdate}
-              className="relative w-full bg-[#060744] hover:bg-[#060872] text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
-            >
-              Save Changes
-            </button>
-          )}
+              <hr className="my-4" />
+
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Change Password</h3>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  placeholder='newPassword'
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">Confirm New Password</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  placeholder='confirmPassword'
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              
+
+        <button
+      onClick={handleUpdate}
+      className="w-full bg-[#060744] hover:bg-[#060872] text-white font-semibold py-2 rounded-lg transition duration-300 relative"
+     >
+     {mutation.isPending ? (
+    <span className="loader inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin absolute right-4 top-1/2 transform -translate-y-1/2"></span>
+     ) : (
+    'Save Changes'
+   )}
+   </button>
+
+            </>
+          ) : null}
         </div>
       </div>
     </div>
