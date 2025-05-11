@@ -1,27 +1,42 @@
-import React from 'react';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { UserProfile } from '../types/auth';
 import { getUserProfile } from '../features/auth/authAPI';
+import DashboardLayout from '../components/layout/DashboardLayout';
+import LogoutModal from '../components/LogoutModal';
 
 const Dashboard: React.FC = () => {
-  const { data: user, isLoading, isError } = useQuery<UserProfile>({
+  const { data: user, isPending, isError } = useQuery<UserProfile>({
     queryKey: ['userProfile'],
     queryFn: getUserProfile,
-    staleTime: 5 * 60 * 1000, //avoids frequent refetch
+    staleTime: 5 * 60 * 1000, // Avoids frequent refetch
   });
 
-  if (isLoading) return <div className="p-6">Loading...</div>;
-  if (isError || !user) return <div className="p-6 text-red-500">Failed to load user profile.</div>;
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  if (isPending) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+      </div>
+    );
+  }
+
+  if (isError || !user) {
+    return <div className="p-6 text-red-500">Failed to load user profile.</div>;
+  }
 
   return (
-    <div className="flex">
-      <Sidebar user={user} />
-      <div className="flex-1 bg-gray-50 min-h-screen">
-        <Header user={user} />
-      </div>
-    </div>
+    <DashboardLayout user={user}>
+      {/* Content goes here */}
+      {/* You can add any specific content for the Dashboard here */}
+      <h2 className="text-3xl text-gray-800 font-bold">Welcome to Your Dashboard!</h2>
+
+      {/* Centered Logout Modal */}
+      {showLogoutModal && (
+        <LogoutModal onClose={() => setShowLogoutModal(false)} />
+      )}
+    </DashboardLayout>
   );
 };
 

@@ -18,6 +18,7 @@ const ProfileInfo: React.FC = () => {
   });
 
   const [isEdit, setIsEdit] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -33,7 +34,10 @@ const ProfileInfo: React.FC = () => {
       setJoinedAt(new Date(profile.createdAt).toLocaleDateString());
     }
   }, [profile]);
-
+   
+  const handleMenuClick = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   const mutation = useMutation({
     mutationFn: updateUserProfile,
     onSuccess: () => {
@@ -85,9 +89,15 @@ const ProfileInfo: React.FC = () => {
 
   return (
     <div className="flex">
-      <Sidebar user={{ name, imageUrl, email, userId: '', createdAt: '', newPassword }} />
+      <Sidebar user={{ name, imageUrl, email, userId: '', createdAt: '', newPassword }}
+        isOpen={isSidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
       <div className="flex-1 bg-gray-50 min-h-screen">
-        <Header user={{ name, imageUrl, email, userId: '', createdAt: '', newPassword }} />
+        <Header user={{ name, imageUrl, email, userId: '', createdAt: '', newPassword }}
+        onMenuClick={handleMenuClick}
+      isMenuOpen={isSidebarOpen}
+        />
         <div className="max-w-2xl mx-auto mt-10 bg-white rounded-2xl shadow p-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800">Profile Information</h2>
