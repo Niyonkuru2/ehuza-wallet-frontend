@@ -18,3 +18,12 @@ export interface AuthResponse {
   token?: string;
   userId?: string;
 }
+
+// Userprofile
+export interface UserProfile {
+  name: string;
+  email: string;
+  imageUrl: string;
+  userId: string;
+  createdAt: string;
+}

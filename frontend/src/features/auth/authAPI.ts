@@ -30,4 +30,15 @@ export const resetPassword = async ({token,newPassword,}: {
   return response.data;
 };
 
+//Get UserProfile api call
+export const getUserProfile = async () => {
+  const token = localStorage.getItem('token');
+  const response = await SERVER_URL.get('/user/profile', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data.profileInfo;
+};
+
 
