@@ -51,7 +51,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
             <button
               type="submit"
               disabled={isPending}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-[#060744] text-white rounded hover:bg-[#060872]"
             >
             <span className="flex items-center gap-2">
           Send Request

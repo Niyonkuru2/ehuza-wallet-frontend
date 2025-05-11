@@ -108,7 +108,7 @@ const Register: React.FC = () => {
           <button
   type="submit"
   disabled={isPending}
-  className="relative w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
+  className="relative w-full bg-[#060744] hover:bg-[#060872] text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
 >
   Register
   {isPending && (
