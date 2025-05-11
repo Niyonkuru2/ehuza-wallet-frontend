@@ -100,12 +100,12 @@ const Login: React.FC = () => {
 
         <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
           <span>
-            Don’t have an account?{' '}
+            Don't have an account?{' '}
             <span
               onClick={() => navigate('/register')}
               className="text-blue-600 font-medium cursor-pointer"
             >
-              Login
+              Register
             </span>
           </span>
           <span
