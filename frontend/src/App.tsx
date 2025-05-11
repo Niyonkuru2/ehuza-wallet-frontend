@@ -1,5 +1,5 @@
 import { ToastContainer } from 'react-toastify';
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -12,6 +12,8 @@ const App = () => {
        <ToastContainer />
        <div>
         <Routes>
+          {/* Redirect root path to /login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/register" element={<Register/>} />
            <Route path="/login" element={<Login/>} />
            <Route path="/reset-password/:token" element={<ResetPassword/>} />
