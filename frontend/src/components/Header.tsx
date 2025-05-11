@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
         <FiBell className="text-xl" />
         <div className="flex items-center gap-2 cursor-pointer">
           <img
-            src={user.imageUrl || '/profile.JPG'}
+            src={user.imageUrl || '/noavatar.jpg'}
             alt="Profile"
             className="w-10 h-10 rounded-full border border-gray-500 object-cover ring-2"
           />

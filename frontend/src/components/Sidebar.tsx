@@ -44,7 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
         <div className="flex items-center gap-3">
           
             <img
-              src={user.imageUrl || '/profile.JPG'}
+              src={user.imageUrl || '/noavatar.jpg'}
               alt="User"
               className="w-10 h-10 rounded-full border border-gray-500 object-cover ring-2"
             />
