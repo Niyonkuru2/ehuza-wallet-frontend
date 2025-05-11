@@ -103,13 +103,13 @@ const Register: React.FC = () => {
             />
           </div>
 
-          {/* Submit */}
+         {/* Submit */}
           
           <button
-  type="submit"
-  disabled={isPending}
+        type="submit"
+    disabled={isPending}
   className="relative w-full bg-[#060744] hover:bg-[#060872] text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
->
+    >
   Register
   {isPending && (
     <span className="absolute right-4 loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
