@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiHome, FiBarChart2, FiLogOut, FiDollarSign } from 'react-icons/fi';
 import { Link, NavLink } from 'react-router-dom';
 import { UserProfile } from '../types/auth';
-
+import LogoutModal from './LogoutModal';
 interface SidebarProps {
   user: UserProfile;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const menuItems = [
-    { name: 'Dashboard', icon: <FiHome />, path: '/' },
+    { name: 'Dashboard', icon: <FiHome />, path: '/dashboard' },
     { name: 'Transactions', icon: <FiBarChart2 />, path: '/transactions' },
     { name: 'Deposit', icon: <FiDollarSign />, path: '/deposit' },
     { name: 'Withdraw', icon: <FiDollarSign />, path: '/withdraw' },
   ];
-
+const [showForgot, setShowForgot] = useState(false);
   return (
     <div className="sticky top-0 h-screen w-64 bg-[#0f172a] text-white flex flex-col justify-between shadow-md">
       <div>
@@ -55,13 +55,14 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
         </div>
         </Link>
         <button
-          onClick={() => console.log('Logout logic')}
+          onClick={() => setShowForgot(true)}
           className="text-red-400 hover:text-red-300 flex items-center gap-1 mt-5"
         >
-          <FiLogOut size={18} />
-          Logout
+          <FiLogOut size={18}/> Logout 
+          
         </button>
       </div>
+      {showForgot && <LogoutModal onClose={() => setShowForgot(false)} />}
     </div>
   );
 };
