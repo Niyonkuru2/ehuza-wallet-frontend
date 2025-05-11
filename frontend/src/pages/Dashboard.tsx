@@ -1,4 +1,3 @@
-// pages/Dashboard.tsx
 import React from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
@@ -10,7 +9,7 @@ const Dashboard: React.FC = () => {
   const { data: user, isLoading, isError } = useQuery<UserProfile>({
     queryKey: ['userProfile'],
     queryFn: getUserProfile,
-    staleTime: 5 * 60 * 1000, // optional: avoids frequent refetch
+    staleTime: 5 * 60 * 1000, //avoids frequent refetch
   });
 
   if (isLoading) return <div className="p-6">Loading...</div>;

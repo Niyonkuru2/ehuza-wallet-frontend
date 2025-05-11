@@ -1,4 +1,3 @@
-// components/Header.tsx
 import React from 'react';
 import { FiBell } from 'react-icons/fi';
 import { UserProfile } from '../types/auth';
@@ -19,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           <img
             src={user.imageUrl || '/profile.JPG'}
             alt="Profile"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full border border-gray-500 object-cover ring-2"
           />
           <span className="text-gray-700 font-medium">{user.name}</span>
         </div>

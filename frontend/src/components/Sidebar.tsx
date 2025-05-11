@@ -1,4 +1,3 @@
-// components/Sidebar.tsx
 import React from 'react';
 import { FiHome, FiBarChart2, FiLogOut, FiDollarSign } from 'react-icons/fi';
 import { Link, NavLink } from 'react-router-dom';
@@ -41,19 +40,20 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       </div>
 
       <div className="px-4 py-6 border-t border-gray-700 flex flex-col gap-3">
+        <Link to="/profile">
         <div className="flex items-center gap-3">
-          <Link to="/profile">
+          
             <img
               src={user.imageUrl || '/profile.JPG'}
               alt="User"
-              className="w-10 h-10 rounded-full border border-gray-500 object-cover hover:ring-2 hover:ring-indigo-400 transition"
+              className="w-10 h-10 rounded-full border border-gray-500 object-cover ring-2"
             />
-          </Link>
           <div>
             <p className="text-sm font-semibold leading-tight">{user.name}</p>
             <p className="text-xs text-gray-400">{user.email}</p>
           </div>
         </div>
+        </Link>
         <button
           onClick={() => console.log('Logout logic')}
           className="text-red-400 hover:text-red-300 flex items-center gap-1 mt-5"
