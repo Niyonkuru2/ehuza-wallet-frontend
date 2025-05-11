@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   }
 },
     onError: (error: AxiosError<{ message: string }>) => {
-      const msg = error.response?.data?.message || 'Login failed!';
+      const msg = error.response?.data?.message;
       toast.error(msg);
     },
   });
