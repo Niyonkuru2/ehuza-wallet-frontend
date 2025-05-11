@@ -14,7 +14,7 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
   const { mutate, isPending } = useMutation({
     mutationFn: requestResetPassword,
     onSuccess: (data) => {
-      toast.success(data.message || 'Reset link sent!');
+      toast.success(data.message);
       onClose();
     },
     onError: (error: AxiosError<{ message: string }>) => {
@@ -56,8 +56,8 @@ const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ onClose }) =>
             <span className="flex items-center gap-2">
           Send Request
         {isPending && (
-      <span className="loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-    )}
+         <span className="loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+       )}
   </span>
             </button>
           </div>
