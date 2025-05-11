@@ -27,3 +27,10 @@ export interface UserProfile {
   userId: string;
   createdAt: string;
 }
+
+export interface HeaderProps {
+  user: {
+    name: string;
+    imageUrl: string;
+  };
+}

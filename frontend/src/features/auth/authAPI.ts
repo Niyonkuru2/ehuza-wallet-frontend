@@ -1,5 +1,5 @@
 import { SERVER_URL } from '../../services/api';
-import { RegisterPayload, LoginPayload, AuthResponse } from '../../types/auth';
+import { RegisterPayload, LoginPayload, AuthResponse, UserProfile } from '../../types/auth';
 
 //Register user api call
 export const registerUser = async (data: RegisterPayload): Promise<AuthResponse> => {
@@ -31,13 +31,8 @@ export const resetPassword = async ({token,newPassword,}: {
 };
 
 //Get UserProfile api call
-export const getUserProfile = async () => {
-  const token = localStorage.getItem('token');
-  const response = await SERVER_URL.get('/user/profile', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getUserProfile = async (): Promise<UserProfile> => {
+  const response = await SERVER_URL.get('/user/profile');
   return response.data.profileInfo;
 };
 
