@@ -1,6 +1,6 @@
 import { SERVER_URL } from '../../services/api';
 import { RegisterPayload, LoginPayload, AuthResponse, UserProfile } from '../../types/auth';
-import { WalletActionResponse, WalletBalanceResponse, WalletTransactionPayload } from '../../types/wallet';
+import { TransactionHistoryResponse, WalletActionResponse, WalletBalanceResponse, WalletTransactionPayload } from '../../types/wallet';
 
 //Register user api call
 export const registerUser = async (data: RegisterPayload): Promise<AuthResponse> => {
@@ -62,6 +62,14 @@ export const withdrawMoney = async (
   data: WalletTransactionPayload
 ): Promise<WalletActionResponse> => {
   const response = await SERVER_URL.post('/wallet/withdraw', data);
+  return response.data;
+};
+
+// Get latest transactions with pagination
+export const getTransactionHistory = async (page = 1, limit = 10): Promise<TransactionHistoryResponse> => {
+  const response = await SERVER_URL.get('/wallet/transactions', {
+    params: { page, limit }
+  });
   return response.data;
 };
 
