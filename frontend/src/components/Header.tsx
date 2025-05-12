@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiBell, FiMenu, FiX } from 'react-icons/fi';
 import { UserProfile } from '../types/auth';
+import { WalletTransaction } from '../types/wallet';
+import NotificationModal from './NotificationModal';
 
 interface HeaderProps {
   user: UserProfile;
   isMenuOpen: boolean;
   onMenuClick: () => void;
+  transactions: WalletTransaction[];
 }
 
-const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick }) => {
+const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick, transactions }) => {
+  const [showPopup, setShowPopup] = useState(false);
+
   return (
     <header className="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
       {/* Toggle button for mobile menu */}
@@ -23,8 +28,15 @@ const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick }) => {
 
       <p className="text-gray-500 hidden sm:block">Welcome, {user.name}</p>
 
-      <div className="flex items-center gap-4">
-        <FiBell className="text-xl" />
+      <div className="flex items-center gap-6 relative">
+        {/* Bell icon */}
+        <button 
+        aria-label="close"
+        onClick={() => setShowPopup(!showPopup)} className="relative">
+          <FiBell className="text-xl text-gray-600 hover:text-gray-800" />
+        </button>
+
+        {/* Profile */}
         <div className="flex items-center gap-2 cursor-pointer">
           <img
             src={user.imageUrl || '/noavatar.jpg'}
@@ -35,6 +47,16 @@ const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick }) => {
             {user.name}
           </span>
         </div>
+
+        {/* Notification Popup */}
+        {showPopup && (
+          <div className="absolute top-12 right-0">
+            <NotificationModal
+              transactions={transactions}
+              onClose={() => setShowPopup(false)}
+            />
+          </div>
+        )}
       </div>
     </header>
   );
