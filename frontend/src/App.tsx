@@ -7,6 +7,7 @@ import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoutes';
 import ProfileInfo from './pages/Profile';
+import TransactionsPage from './pages/Transaction';
 const App = () => {
   return (
     <div>
@@ -20,6 +21,7 @@ const App = () => {
            <Route path="/reset-password/:token" element={<ResetPassword/>} />
            <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
            <Route path="/profile" element={<ProtectedRoute><ProfileInfo/></ProtectedRoute>} />
+           <Route path="/transactions" element={<ProtectedRoute><TransactionsPage/></ProtectedRoute>} />
         </Routes>
         </div>
     </div>

@@ -29,8 +29,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <DashboardLayout user={user}>
-      {/* Content goes here */}
-      {/* You can add any specific content for the Dashboard here */}
        <DashboardCards />
       {/* Centered Logout Modal */}
       {showLogoutModal && (
