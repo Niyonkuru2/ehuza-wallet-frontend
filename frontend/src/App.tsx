@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoutes';
 import ProfileInfo from './pages/Profile';
 import TransactionsPage from './pages/Transaction';
+import WithdrawPage from './pages/Withdraw';
+import DepositPage from './pages/Deposit';
 const App = () => {
   return (
     <div>
@@ -22,6 +24,8 @@ const App = () => {
            <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
            <Route path="/profile" element={<ProtectedRoute><ProfileInfo/></ProtectedRoute>} />
            <Route path="/transactions" element={<ProtectedRoute><TransactionsPage/></ProtectedRoute>} />
+           <Route path="/deposit" element={<ProtectedRoute><DepositPage/></ProtectedRoute>} />
+           <Route path="/withdraw" element={<ProtectedRoute><WithdrawPage/></ProtectedRoute>} />
         </Routes>
         </div>
     </div>

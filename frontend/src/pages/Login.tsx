@@ -87,9 +87,9 @@ const Login: React.FC = () => {
             />
           </div>
         <button
-    type="submit"
-    disabled={isPending}
-    className="relative w-full bg-[#060744] hover:bg-[#090a5a] text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
+      type="submit"
+       disabled={isPending}
+      className="relative w-full bg-[#060744] hover:bg-[#090a5a] text-white font-semibold py-2 rounded-lg transition duration-300 flex justify-center items-center"
    >
   Login
   {isPending && (
