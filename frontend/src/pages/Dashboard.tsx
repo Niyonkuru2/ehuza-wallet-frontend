@@ -5,6 +5,7 @@ import { getUserProfile } from '../features/auth/authAPI';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import LogoutModal from '../components/LogoutModal';
 import DashboardCards from '../components/DashboardCards';
+import TransactionChart from '../components/TransactionChart';
 
 const Dashboard: React.FC = () => {
   const { data: user, isPending, isError } = useQuery<UserProfile>({
@@ -30,6 +31,7 @@ const Dashboard: React.FC = () => {
   return (
     <DashboardLayout user={user}>
        <DashboardCards />
+       <TransactionChart />
       {/* Centered Logout Modal */}
       {showLogoutModal && (
         <LogoutModal onClose={() => setShowLogoutModal(false)} />

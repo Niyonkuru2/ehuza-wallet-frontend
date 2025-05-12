@@ -32,8 +32,8 @@ export const getTransactionHistory = async (page = 1, limit = 10): Promise<Trans
 };
 
 // Get monthly transaction data for the user
-export const getMonthlyTransactionData = async (): Promise<MonthlyTransactionData[]> => {
-  const response = await SERVER_URL.get('/transactions/monthly');
+export const getMonthlyTransaction = async (): Promise<MonthlyTransactionData[]> => {
+  const response = await SERVER_URL.get('/transactions/comparision');
   return response.data.monthlyTransactions;
 };
 

@@ -96,8 +96,7 @@ const Login: React.FC = () => {
     <span className="absolute right-4 loader inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
   )}
 </button>
-        </form>
-
+  </form>
         <div className="flex justify-between items-center mt-4 text-sm text-gray-600">
           <span>
             Don't have an account?{' '}
