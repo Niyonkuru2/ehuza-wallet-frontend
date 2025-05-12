@@ -31,3 +31,11 @@ export interface TransactionHistoryResponse {
   transactions: WalletTransaction[];
 }
 
+// getmonthlytransaction interface
+export interface MonthlyTransactionData {
+  month: number; 
+  deposit: number;
+  withdraw: number;
+}
+
+
