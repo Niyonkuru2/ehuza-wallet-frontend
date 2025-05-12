@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
-import { withdrawMoney } from '../features/wallet/walletAPI';
+import { depositMoney} from '../features/wallet/walletAPI';
 import { getUserProfile } from '../features/auth/authAPI';
 import { UserProfile } from '../types/auth';
 import { WalletActionResponse } from '../types/wallet';
@@ -24,7 +24,7 @@ const WithdrawPage: React.FC = () => {
 
   // Mutation to handle withdrawal
   const { mutate, isPending } = useMutation({
-    mutationFn: withdrawMoney,
+    mutationFn: depositMoney,
     onSuccess: (data: WalletActionResponse) => {
       toast.success(data.message);
       setAmount('');
@@ -37,17 +37,17 @@ const WithdrawPage: React.FC = () => {
     },
   });
 
-  // Handle form submission for withdrawal
+  // Handle form submission for Deposit
   const handleWithdraw = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Prepare withdrawal request data with description
+    // Prepare Deposit request data with description
     const withdrawalData = {
       amount: parseFloat(amount),
       description,
     };
 
-    // Trigger the withdrawal mutation
+    // Trigger the Deposit mutation
     mutate(withdrawalData);
   };
 
@@ -82,7 +82,7 @@ const WithdrawPage: React.FC = () => {
               id="amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="Enter amount"
+              placeholder="Enter amount To deposit"
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -96,7 +96,7 @@ const WithdrawPage: React.FC = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              placeholder="Add Description for this withdrawal"
+              placeholder="Add Description for this Deposit"
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
