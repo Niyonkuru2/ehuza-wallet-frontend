@@ -2,31 +2,49 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getWalletBalance, getTransactionHistory } from '../features/wallet/walletAPI';
 import { FiArrowUpRight, FiArrowDownRight } from 'react-icons/fi';
-import { WalletBalanceResponse, Transaction } from '../types/wallet';
+import { WalletBalanceResponse } from '../types/wallet';
+
+const calculatePercentageChange = (
+  newAmount: number,
+  oldAmount: number
+): number => {
+  return ((newAmount - oldAmount) / oldAmount) * 100;
+};
 
 const DashboardCards: React.FC = () => {
-  const { data: balanceData, isLoading: loadingBalance } = useQuery<WalletBalanceResponse>({
+  const {
+    data: balanceData,
+    isLoading: loadingBalance,
+  } = useQuery<WalletBalanceResponse>({
     queryKey: ['walletBalance'],
     queryFn: getWalletBalance,
   });
 
   const {
-    data: transactionData,
-    isLoading: loadingTransactions,
+    data: latestData,
+    isLoading: loadingLatest,
   } = useQuery({
-    queryKey: ['transactionHistory'],
+    queryKey: ['transactionHistory', 1],
     queryFn: () => getTransactionHistory(1, 10),
   });
 
-  const transactions: Transaction[] = transactionData?.transactions || [];
+  const latest = latestData?.transactions || [];
 
-  const totalDeposit = transactions
-    .filter((tx) => tx.type === 'deposit')
-    .reduce((sum, tx) => sum + tx.amount, 0);
+  // Total deposit and withdraw in the latest transactions
+  const totalDeposit = latest
+    .filter((t) => t.type === 'deposit')
+    .reduce((sum, t) => sum + t.amount, 0);
 
-  const totalWithdraw = transactions
-    .filter((tx) => tx.type === 'withdraw')
-    .reduce((sum, tx) => sum + tx.amount, 0);
+  const totalWithdraw = latest
+    .filter((t) => t.type === 'withdraw')
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  // Calculate percentage changes compared to wallet balance
+  const depositBalanceDiff = balanceData?.balance - totalDeposit || 0;
+  const withdrawBalanceDiff = balanceData?.balance - totalWithdraw || 0;
+
+  const depositPercentageChange = calculatePercentageChange(balanceData?.balance, totalDeposit);
+  const withdrawPercentageChange = calculatePercentageChange(balanceData?.balance, totalWithdraw);
 
   return (
     <div className="px-4 md:px-6 pt-6 space-y-6 w-full">
@@ -47,27 +65,44 @@ const DashboardCards: React.FC = () => {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 font-medium">Total Deposit</p>
           <p className="text-3xl font-bold mt-1">
-            {loadingTransactions ? '...' : `$${totalDeposit.toFixed(2)}`}
+            {loadingLatest ? '...' : `$${totalDeposit.toFixed(2)}`}
           </p>
-          <p className="text-sm text-gray-500 mt-1">Based on last 10 transactions</p>
-          <div className="flex items-center gap-1 text-green-600 text-sm mt-1">
-            <FiArrowUpRight />
-            {/* Placeholder for future comparison logic */}
-            8.2%
-          </div>
+          <p className="text-sm text-gray-500 mt-1">Compare to wallet balance</p>
+
+          {depositBalanceDiff === 0 ? (
+            <p className="text-sm text-gray-400 mt-1">No difference from wallet balance</p>
+          ) : (
+            <div
+              className={`flex items-center gap-1 text-sm mt-1 ${
+                depositPercentageChange >= 0 ? 'text-green-600' : 'text-red-500'
+              }`}
+            >
+              {depositPercentageChange >= 0 ? <FiArrowUpRight /> : <FiArrowDownRight />}
+              {`${Math.abs(depositPercentageChange).toFixed(1)}%`}
+            </div>
+          )}
         </div>
 
         {/* Total Withdraw */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 font-medium">Total Withdraw</p>
           <p className="text-3xl font-bold mt-1">
-            {loadingTransactions ? '...' : `$${totalWithdraw.toFixed(2)}`}
+            {loadingLatest ? '...' : `$${totalWithdraw.toFixed(2)}`}
           </p>
-          <p className="text-sm text-gray-500 mt-1">Based on last 10 transactions</p>
-          <div className="flex items-center gap-1 text-red-500 text-sm mt-1">
-            <FiArrowDownRight />
-            1.8%
-          </div>
+          <p className="text-sm text-gray-500 mt-1">Compare to wallet balance</p>
+
+          {withdrawBalanceDiff === 0 ? (
+            <p className="text-sm text-gray-400 mt-1">No difference from wallet balance</p>
+          ) : (
+            <div
+              className={`flex items-center gap-1 text-sm mt-1 ${
+                withdrawPercentageChange >= 0 ? 'text-green-600' : 'text-red-500'
+              }`}
+            >
+              {withdrawPercentageChange >= 0 ? <FiArrowUpRight /> : <FiArrowDownRight />}
+              {`${Math.abs(withdrawPercentageChange).toFixed(1)}%`}
+            </div>
+          )}
         </div>
       </div>
     </div>

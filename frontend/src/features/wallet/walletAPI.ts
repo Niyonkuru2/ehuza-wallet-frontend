@@ -3,7 +3,7 @@ import { TransactionHistoryResponse, WalletActionResponse, WalletBalanceResponse
 
 // Get wallet balance apii call
 export const getWalletBalance = async (): Promise<WalletBalanceResponse> => {
-  const response = await SERVER_URL.get('/wallet/balance');
+  const response = await SERVER_URL.get('/wallet');
   return response.data;
 };
 
@@ -25,7 +25,7 @@ export const withdrawMoney = async (
 
 // Get latest transactions with pagination
 export const getTransactionHistory = async (page = 1, limit = 10): Promise<TransactionHistoryResponse> => {
-  const response = await SERVER_URL.get('/wallet/transactions', {
+  const response = await SERVER_URL.get('/transactions', {
     params: { page, limit }
   });
   return response.data;

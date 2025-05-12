@@ -4,6 +4,7 @@ import { UserProfile } from '../types/auth';
 import { getUserProfile } from '../features/auth/authAPI';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import LogoutModal from '../components/LogoutModal';
+import DashboardCards from '../components/DashboardCards';
 
 const Dashboard: React.FC = () => {
   const { data: user, isPending, isError } = useQuery<UserProfile>({
@@ -30,8 +31,7 @@ const Dashboard: React.FC = () => {
     <DashboardLayout user={user}>
       {/* Content goes here */}
       {/* You can add any specific content for the Dashboard here */}
-      <h2 className="text-3xl text-gray-800 font-bold">Welcome to Your Dashboard!</h2>
-
+       <DashboardCards />
       {/* Centered Logout Modal */}
       {showLogoutModal && (
         <LogoutModal onClose={() => setShowLogoutModal(false)} />
