@@ -62,7 +62,7 @@ const Transactions: React.FC = () => {
       Date: new Date(tx.createdAt).toLocaleString(),
       Description: tx.description,
       Amount: tx.amount,
-      Type: tx.type === 'deposit' ? 'Deposit' : 'Withdrawal',
+      Type: tx.type === 'deposit' ? 'Deposit' : 'Withdraw',
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
@@ -156,8 +156,10 @@ const Transactions: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y">
-                {filteredTxs.map((tx) => (
-                  <tr key={tx.transactionId}>
+                {filteredTxs.map((tx,index) => (
+                  <tr key={tx.transactionId}
+                   className={`${index % 2 === 0 ? "bg-white" : "bg-gray-100"} text-center border-t`}
+                  >
                     <td className="p-4">{new Date(tx.createdAt).toLocaleString()}</td>
                     <td className="p-4">{tx.description}</td>
                     <td className="p-4">{tx.amount.toFixed(2)} RWF</td>
