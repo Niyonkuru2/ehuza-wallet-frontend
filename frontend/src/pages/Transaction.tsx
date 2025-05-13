@@ -14,15 +14,15 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FaFileExcel } from 'react-icons/fa';
 
-const ROWS_PER_PAGE = 10; // Number of rows per page for pagination
-
+// Define the number of rows shown per page in the transaction table
+const ROWS_PER_PAGE = 10;
 const Transactions: React.FC = () => {
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState({ deposit: true, withdrawal: true });
   const [sortByDateAsc, setSortByDateAsc] = useState(false);
   const [page, setPage] = useState(1);
 
-  // Query to get user profile
+  // Fetch user profile data
   const {
     data: user,
     isPending: loadingUser,
@@ -32,7 +32,7 @@ const Transactions: React.FC = () => {
     queryFn: getUserProfile,
   });
 
-  // Query to get paginated transactions
+  // Fetch transaction history data with pagination
   const {
     data,
     isPending,
@@ -49,9 +49,10 @@ const Transactions: React.FC = () => {
     },
   });
 
+  // Extract transactions array
   const transactions: WalletTransaction[] = data?.transactions ?? [];
 
-  // Filtering and sorting the transactions before displaying
+  // Filter and sort transactions based on type,
   const filteredTxs = transactions
     .filter(
       (tx) =>
@@ -69,7 +70,7 @@ const Transactions: React.FC = () => {
       return sortByDateAsc ? dateA - dateB : dateB - dateA;
     });
 
-  // Export visible data to Excel
+  // Function to export the filtered transactions as an Excel file
   const handleExportExcel = () => {
     const exportData = filteredTxs.map((tx) => ({
       Date: new Date(tx.createdAt).toLocaleString(),
@@ -78,30 +79,27 @@ const Transactions: React.FC = () => {
       Type: tx.type === 'deposit' ? 'Deposit' : 'Withdraw',
     }));
 
-    const worksheet = XLSX.utils.json_to_sheet(exportData); // Convert to Excel worksheet
-    const workbook = XLSX.utils.book_new(); // Create new workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Transactions'); // Add worksheet
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Transactions');
 
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' }); // Write buffer
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([excelBuffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
     });
 
-    saveAs(blob, 'Transactions.xlsx'); // Download file
+    saveAs(blob, 'Transactions.xlsx');
   };
-
-  // Show loading while fetching user
   if (loadingUser || !user) {
     return <p className="text-center py-10">Loading user...</p>;
   }
-
   return (
     <DashboardLayout user={user}>
-      <div className="p-6 space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-center">
+      <div className="p-4 sm:p-6 space-y-6">
+        {/* Page Header with Export Buttons */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <h2 className="text-2xl font-bold">Transactions</h2>
-          <div className="flex gap-2">
+          <div className="hidden sm:flex flex-wrap gap-2">
             <button onClick={handleExportExcel} className="btn flex items-center gap-1">
               <FiDownload /> Export
             </button>
@@ -111,33 +109,35 @@ const Transactions: React.FC = () => {
           </div>
         </div>
 
-        {/* Filters and Search */}
-        <div className="flex justify-between flex-wrap gap-4 items-center">
-          {/* Filter checkboxes */}
-          <div className="flex gap-4">
-            <label className="flex items-center gap-1">
-              <input
-                type="checkbox"
-                checked={filters.deposit}
-                onChange={() =>
-                  setFilters((prev) => ({ ...prev, deposit: !prev.deposit }))
-                }
-              />
-              Deposit
-            </label>
-            <label className="flex items-center gap-1">
-              <input
-                type="checkbox"
-                checked={filters.withdrawal}
-                onChange={() =>
-                  setFilters((prev) => ({ ...prev, withdrawal: !prev.withdrawal }))
-                }
-              />
-              Withdraw
-            </label>
+        {/* Filter and Search Section */}
+        <div className="hidden sm:flex flex-col md:flex-row justify-between gap-4">
+          <div className="flex flex-col md:flex-row justify-between gap-4">
+            {/* Deposit and Withdraw Filters */}
+            <div className="hidden sm:flex flex-wrap gap-4">
+              <label className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  checked={filters.deposit}
+                  onChange={() =>
+                    setFilters((prev) => ({ ...prev, deposit: !prev.deposit }))
+                  }
+                />
+                Deposit
+              </label>
+              <label className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  checked={filters.withdrawal}
+                  onChange={() =>
+                    setFilters((prev) => ({ ...prev, withdrawal: !prev.withdrawal }))
+                  }
+                />
+                Withdraw
+              </label>
+            </div>
           </div>
 
-          {/* Search input */}
+          {/* Search Input */}
           <div className="relative w-full md:w-1/3">
             <FiSearch className="absolute top-2.5 left-3 text-gray-500" />
             <input
@@ -152,15 +152,17 @@ const Transactions: React.FC = () => {
 
         {/* Transaction Table */}
         {isPending ? (
+          // Show loading message if data is loading
           <p className="text-center py-10">Loading transactions...</p>
         ) : isError || errorUser ? (
+          // Show error message if data fails to load
           <p className="text-center text-red-600 py-10">Failed to load data.</p>
         ) : (
-          <div className="overflow-x-auto border rounded-md">
-            <table className="min-w-full text-left text-sm">
-              <thead className="bg-gray-100">
+          // Display transactions history
+          <div className="overflow-x-auto rounded-md border">
+            <table className="min-w-full table-auto text-sm block md:table">
+              <thead className="bg-gray-100 hidden md:table-header-group">
                 <tr>
-                  {/* Clickable column header for sorting */}
                   <th
                     className="p-4 cursor-pointer"
                     onClick={() => setSortByDateAsc(!sortByDateAsc)}
@@ -174,18 +176,26 @@ const Transactions: React.FC = () => {
                   <th className="p-4">Type</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y">
+              <tbody className="bg-white divide-y block md:table-row-group">
                 {filteredTxs.map((tx, index) => (
                   <tr
                     key={tx.transactionId}
-                    className={`${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
-                    } border-t`}
+                    className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} border-t`}
                   >
-                    <td className="p-4">{new Date(tx.createdAt).toLocaleString()}</td>
-                    <td className="p-4">{tx.description}</td>
-                    <td className="p-4">{tx.amount.toFixed(2)} RWF</td>
-                    <td className="p-4">
+                    <td className="p-4 block md:table-cell">
+                      <span className="font-semibold md:hidden">Date: </span>
+                      {new Date(tx.createdAt).toLocaleString()}
+                    </td>
+                    <td className="p-4 block md:table-cell">
+                      <span className="font-semibold md:hidden">Description: </span>
+                      {tx.description}
+                    </td>
+                    <td className="p-4 block md:table-cell">
+                      <span className="font-semibold md:hidden">Amount: </span>
+                      {tx.amount.toFixed(2)} RWF
+                    </td>
+                    <td className="p-4 block md:table-cell">
+                      <span className="font-semibold md:hidden">Type: </span>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           tx.type === 'deposit'
@@ -201,9 +211,9 @@ const Transactions: React.FC = () => {
               </tbody>
             </table>
 
-            {/* Pagination */}
+            {/* Pagination Controls */}
             {data?.totalPages > 1 && (
-              <div className="flex justify-center items-center gap-4 mt-4">
+              <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4 mt-4 p-4">
                 <button
                   onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                   disabled={page === 1}
@@ -229,5 +239,4 @@ const Transactions: React.FC = () => {
     </DashboardLayout>
   );
 };
-
 export default Transactions;
