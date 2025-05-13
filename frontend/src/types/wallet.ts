@@ -29,7 +29,11 @@ export interface WalletTransaction {
 export interface TransactionHistoryResponse {
   success: boolean;
   transactions: WalletTransaction[];
+  total: number;
+  page: number;
+  totalPages: number;
 }
+
 
 // getmonthlytransaction interface
 export interface MonthlyTransactionData {
