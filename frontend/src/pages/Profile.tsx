@@ -74,7 +74,7 @@ const ProfileInfo: React.FC = () => {
     }
   };
 
-  if (isPending) {
+  if (isPending || !profile) {
     return (
       <div className="flex items-center justify-center h-screen">
         <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
@@ -84,18 +84,18 @@ const ProfileInfo: React.FC = () => {
 
   return (
     <DashboardLayout user={profile}>
-      <div className="max-w-2xl mx-auto mt-10 bg-white rounded-2xl shadow p-8">
-        <div className="flex justify-between items-center mb-6">
+      <div className="w-full max-w-2xl mx-auto mt-10 bg-white rounded-2xl shadow p-6 sm:p-8 px-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <h2 className="text-2xl font-bold text-gray-800">Profile Information</h2>
           <button
             onClick={() => setIsEdit(!isEdit)}
             className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700"
           >
-            {isEdit ? 'Cancel' : 'Update Profile'}
+            {isEdit ? 'Cancel' : 'Update'}
           </button>
         </div>
 
-        <div className="flex items-center mb-6">
+        <div className="flex flex-col md:flex-row items-center md:items-start mb-6 gap-4">
           <div
             className={`w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 ${
               isEdit ? 'cursor-pointer' : ''
@@ -112,13 +112,13 @@ const ProfileInfo: React.FC = () => {
             ref={fileInputRef}
             type="file"
             accept="image/*"
-            placeholder="image"
+            placeholder="Image"
             onChange={handleImageUpload}
             className="hidden"
           />
-          <div className="ml-4">
+          <div className="text-center md:text-left">
             <p className="font-semibold text-gray-800">{name}</p>
-            <p className="text-gray-500 text-sm">{email}</p>
+            <p className="text-gray-500 text-sm break-words">{email}</p>
             <p className="text-gray-400 text-xs mt-1">Joined on: {joinedAt}</p>
           </div>
         </div>
@@ -132,7 +132,7 @@ const ProfileInfo: React.FC = () => {
                 value={name}
                 placeholder="Full Name"
                 onChange={(e) => setName(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="pl-3 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -143,7 +143,7 @@ const ProfileInfo: React.FC = () => {
                 value={email}
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="pl-3 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -158,7 +158,7 @@ const ProfileInfo: React.FC = () => {
                 value={newPassword}
                 placeholder="New Password"
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="pl-3 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -169,7 +169,7 @@ const ProfileInfo: React.FC = () => {
                 value={confirmPassword}
                 placeholder="Confirm Password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="pl-3 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
