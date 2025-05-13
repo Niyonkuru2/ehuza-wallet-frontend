@@ -14,7 +14,7 @@ const NotificationModal: React.FC<Props> = ({ transactions = [], onClose }) => {
     .slice(0, 3);
 
   return (
-    <div className="fixed top-5 right-5 w-96 bg-[#0D1B2A] text-white rounded-lg shadow-lg z-50">
+    <div className="fixed top-0 right-0 sm:top-5 sm:right-5 w-full sm:w-[28rem] bg-[#0D1B2A] text-white rounded-none sm:rounded-lg shadow-lg z-50 max-h-[90vh] overflow-y-auto">
       <div className="flex justify-between items-center px-4 py-3 border-b border-gray-700">
         <h3 className="text-lg font-semibold">Notifications</h3>
         <button aria-label="Close Modal" onClick={onClose}>

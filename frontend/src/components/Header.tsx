@@ -14,6 +14,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick, transactions }) => {
   const [showPopup, setShowPopup] = useState(false);
 
+  console.log('🧾 Transactions passed to Header:', transactions);
+
   return (
     <header className="sticky top-0 z-50 flex justify-between items-center p-6 bg-white shadow-md">
       {/* Toggle button for mobile menu */}
@@ -30,9 +32,11 @@ const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick, transact
 
       <div className="flex items-center gap-6 relative">
         {/* Bell icon */}
-        <button 
-        aria-label="close"
-        onClick={() => setShowPopup(!showPopup)} className="relative">
+        <button
+          aria-label={showPopup ? 'Close notifications' : 'Open notifications'}
+          onClick={() => setShowPopup(!showPopup)}
+          className="relative"
+        >
           <FiBell className="text-xl text-gray-600 hover:text-gray-800" />
         </button>
 
