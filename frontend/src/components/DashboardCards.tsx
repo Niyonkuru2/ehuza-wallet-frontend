@@ -49,10 +49,10 @@ const DashboardCards: React.FC = () => {
   return (
     <div className="px-4 md:px-6 pt-6 space-y-6 w-full">
       {/* Wallet Balance Card */}
-      <div className="bg-indigo-900 text-white p-6 rounded-2xl shadow-sm">
+      <div className="bg-[#060744] text-white p-6 rounded-2xl shadow-sm">
         <p className="text-sm">Wallet Balance</p>
         <p className="text-4xl font-semibold mt-1">
-          {loadingBalance ? 'Loading...' : `$${balanceData?.balance.toFixed(2)}`}
+          {loadingBalance ? 'Loading...' : `${balanceData?.balance.toFixed(2)} RWF`}
         </p>
       </div>
 
@@ -65,7 +65,7 @@ const DashboardCards: React.FC = () => {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 font-medium">Total Deposit</p>
           <p className="text-3xl font-bold mt-1">
-            {loadingLatest ? '...' : `$${totalDeposit.toFixed(2)}`}
+            {loadingLatest ? '...' : `${totalDeposit.toFixed(2)} RWF`}
           </p>
           <p className="text-sm text-gray-500 mt-1">Compare to wallet balance</p>
 
@@ -87,7 +87,7 @@ const DashboardCards: React.FC = () => {
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <p className="text-sm text-gray-500 font-medium">Total Withdraw</p>
           <p className="text-3xl font-bold mt-1">
-            {loadingLatest ? '...' : `$${totalWithdraw.toFixed(2)}`}
+            {loadingLatest ? '...' : `${totalWithdraw.toFixed(2)} RWF`}
           </p>
           <p className="text-sm text-gray-500 mt-1">Compare to wallet balance</p>
 
