@@ -13,18 +13,19 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FaFileExcel } from 'react-icons/fa';
-
+const ROWS_PER_PAGE = 10;
 const Transactions: React.FC = () => {
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState({ deposit: true, withdrawal: true });
   const [sortByDateAsc, setSortByDateAsc] = useState(false);
+  const [page, setPage] = useState(1);
 
   const {
     data: user,
     isPending: loadingUser,
     isError: errorUser,
   } = useQuery({
-    queryKey: ['userProfile'],
+    queryKey: ['userProfile',page],
     queryFn: getUserProfile,
   });
 
@@ -34,8 +35,13 @@ const Transactions: React.FC = () => {
     isError,
   } = useQuery({
     queryKey: ['transactions'],
-    queryFn: () => getTransactionHistory(1, 100),
-    staleTime: 5 * 60 * 1000,
+    queryFn: () => getTransactionHistory(page),
+    placeholderData: () => ({
+      data: [],
+      total: 0,
+      page,
+      totalPages: 0,
+    }),
   });
 
   const transactions: WalletTransaction[] = transactionData?.transactions ?? [];
@@ -178,6 +184,28 @@ const Transactions: React.FC = () => {
                 ))}
               </tbody>
             </table>
+            {/** Pagination Controls */}
+            {data.total > ROWS_PER_PAGE && (
+            <div className="flex justify-center items-center gap-4 mt-4">
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="px-4 py-2 border rounded disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+              >
+                Previous
+              </button>
+              <span className="text-sm">
+                Page {page} of {data.totalPages}
+              </span>
+              <button
+                onClick={() => setPage((prev) => Math.min(prev + 1, data.totalPages))}
+                disabled={page === data.totalPages}
+                className="px-4 py-2 border rounded disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
+            </div>
+          )}
           </div>
         )}
       </div>
