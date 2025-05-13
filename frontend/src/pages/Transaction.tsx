@@ -21,7 +21,7 @@ const Transactions: React.FC = () => {
 
   const {
     data: user,
-    isLoading: loadingUser,
+    isPending: loadingUser,
     isError: errorUser,
   } = useQuery({
     queryKey: ['userProfile'],
@@ -30,7 +30,7 @@ const Transactions: React.FC = () => {
 
   const {
     data: transactionData,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: ['transactions'],
@@ -133,7 +133,7 @@ const Transactions: React.FC = () => {
           </div>
         </div>
 
-        {isLoading ? (
+        {isPending ? (
           <p className="text-center py-10">Loading transactions...</p>
         ) : isError || errorUser ? (
           <p className="text-center text-red-600 py-10">Failed to load data.</p>
@@ -160,7 +160,7 @@ const Transactions: React.FC = () => {
                   <tr key={tx.transactionId}>
                     <td className="p-4">{new Date(tx.createdAt).toLocaleString()}</td>
                     <td className="p-4">{tx.description}</td>
-                    <td className="p-4">${tx.amount.toFixed(2)}</td>
+                    <td className="p-4">{tx.amount.toFixed(2)} RWF</td>
                     <td className="p-4">
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
