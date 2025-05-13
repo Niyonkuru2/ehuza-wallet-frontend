@@ -36,10 +36,17 @@ export interface TransactionHistoryResponse {
 
 
 // getmonthlytransaction interface
-export interface MonthlyTransactionData {
-  month: number; 
+//export type MonthlyTransactionData = {
+ // month: number; // 1 to 12
+  //deposit: number;
+ // withdraw: number;
+//};
+
+export type ChartData = {
+  month: string;
   deposit: number;
   withdraw: number;
-}
+};
+
 
 

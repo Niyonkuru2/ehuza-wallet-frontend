@@ -1,7 +1,7 @@
 import { SERVER_URL } from '../../services/api';
-import { MonthlyTransactionData, TransactionHistoryResponse, WalletActionResponse, WalletBalanceResponse, WalletTransactionPayload } from '../../types/wallet';
+import { ChartData,TransactionHistoryResponse, WalletActionResponse, WalletBalanceResponse, WalletTransactionPayload } from '../../types/wallet';
 
-// Get wallet balance apii call
+// Get wallet balance api call
 export const getWalletBalance = async (): Promise<WalletBalanceResponse> => {
   const response = await SERVER_URL.get('/wallet');
   return response.data;
@@ -32,8 +32,8 @@ export const getTransactionHistory = async (page = 1, limit = 10): Promise<Trans
 };
 
 // Get monthly transaction data for the user
-export const getMonthlyTransaction = async (): Promise<MonthlyTransactionData[]> => {
+export const getMonthlyTransaction = async (): Promise<ChartData[]> => {
   const response = await SERVER_URL.get('/transactions/comparision');
-  return response.data.monthlyTransactions;
+  return response.data.monthlyTransactions; // already in ChartData[] format
 };
 

@@ -40,11 +40,15 @@ const DashboardCards: React.FC = () => {
     .reduce((sum, t) => sum + t.amount, 0);
 
   // Calculate percentage changes compared to wallet balance
-  const depositBalanceDiff = balanceData?.balance - totalDeposit || 0;
-  const withdrawBalanceDiff = balanceData?.balance - totalWithdraw || 0;
+  const depositBalanceDiff = balanceData?.balance ? balanceData.balance - totalDeposit : 0;
+  const withdrawBalanceDiff = balanceData?.balance ? balanceData.balance - totalWithdraw : 0;
 
-  const depositPercentageChange = calculatePercentageChange(balanceData?.balance, totalDeposit);
-  const withdrawPercentageChange = calculatePercentageChange(balanceData?.balance, totalWithdraw);
+  const depositPercentageChange = balanceData?.balance
+    ? calculatePercentageChange(balanceData.balance, totalDeposit)
+    : 0;
+  const withdrawPercentageChange = balanceData?.balance
+    ? calculatePercentageChange(balanceData.balance, totalWithdraw)
+    : 0;
 
   return (
     <div className="px-4 md:px-6 pt-6 space-y-6 w-full">
@@ -52,7 +56,7 @@ const DashboardCards: React.FC = () => {
       <div className="bg-[#060744] text-white p-6 rounded-2xl shadow-sm">
         <p className="text-sm">Wallet Balance</p>
         <p className="text-4xl font-semibold mt-1">
-          {loadingBalance ? 'Loading...' : `${balanceData?.balance.toFixed(2)} RWF`}
+          {loadingBalance ? 'Loading...' : `${balanceData?.balance?.toFixed(2)} RWF`}
         </p>
       </div>
 
@@ -73,9 +77,7 @@ const DashboardCards: React.FC = () => {
             <p className="text-sm text-gray-400 mt-1">No difference from wallet balance</p>
           ) : (
             <div
-              className={`flex items-center gap-1 text-sm mt-1 ${
-                depositPercentageChange >= 0 ? 'text-green-600' : 'text-red-500'
-              }`}
+              className={`flex items-center gap-1 text-sm mt-1 ${depositPercentageChange >= 0 ? 'text-green-600' : 'text-red-500'}`}
             >
               {depositPercentageChange >= 0 ? <FiArrowUpRight /> : <FiArrowDownRight />}
               {`${Math.abs(depositPercentageChange).toFixed(1)}%`}
@@ -95,9 +97,7 @@ const DashboardCards: React.FC = () => {
             <p className="text-sm text-gray-400 mt-1">No difference from wallet balance</p>
           ) : (
             <div
-              className={`flex items-center gap-1 text-sm mt-1 ${
-                withdrawPercentageChange >= 0 ? 'text-green-600' : 'text-red-500'
-              }`}
+              className={`flex items-center gap-1 text-sm mt-1 ${withdrawPercentageChange >= 0 ? 'text-green-600' : 'text-red-500'}`}
             >
               {withdrawPercentageChange >= 0 ? <FiArrowUpRight /> : <FiArrowDownRight />}
               {`${Math.abs(withdrawPercentageChange).toFixed(1)}%`}
@@ -108,5 +108,6 @@ const DashboardCards: React.FC = () => {
     </div>
   );
 };
+
 
 export default DashboardCards;

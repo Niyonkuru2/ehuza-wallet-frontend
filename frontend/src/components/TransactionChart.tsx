@@ -10,7 +10,6 @@ import {
 } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import { getMonthlyTransaction } from '../features/wallet/walletAPI';
-import { MonthlyTransactionData } from '../types/wallet';
 
 type ChartData = {
   month: string;
@@ -23,20 +22,24 @@ const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
 const TransactionChart: React.FC = () => {
   const { data, isLoading, isError } = useQuery<ChartData[]>({
     queryKey: ['monthlyTransactions'],
-    queryFn: getMonthlyTransaction,
-    select: (response: { monthlyTransactions: MonthlyTransactionData[] }) => {
-      const map = new Map<number, ChartData>();
+    queryFn: async () => {
+      const response = await getMonthlyTransaction(); // returns { month: 'May', ... }
+      const fullYearData: ChartData[] = monthNames.map((name) => ({
+        month: name,
+        deposit: 0,
+        withdraw: 0
+      }));
 
-      response.monthlyTransactions.forEach(({ month, deposit, withdraw }) => {
-        if (!map.has(month)) {
-          map.set(month, { month: monthNames[month - 1], deposit: 0, withdraw: 0 });
+      // Fill in the actual data by matching the month string
+      response.forEach(({ month, deposit, withdraw }) => {
+        const index = monthNames.findIndex(m => m.toLowerCase() === month.toLowerCase());
+        if (index !== -1) {
+          fullYearData[index].deposit = deposit;
+          fullYearData[index].withdraw = withdraw;
         }
-        const current = map.get(month)!;
-        current.deposit += deposit;
-        current.withdraw += withdraw;
       });
 
-      return Array.from(map.values());
+      return fullYearData;
     },
   });
 
