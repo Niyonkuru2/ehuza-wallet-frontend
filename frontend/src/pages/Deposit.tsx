@@ -22,7 +22,7 @@ const WithdrawPage: React.FC = () => {
     staleTime: 5 * 60 * 1000, // Avoid frequent refetch
   });
 
-  // Mutation to handle withdrawal
+  // Mutation to handle Deposit
   const { mutate, isPending } = useMutation({
     mutationFn: depositMoney,
     onSuccess: (data: WalletActionResponse) => {
@@ -68,7 +68,7 @@ const WithdrawPage: React.FC = () => {
   return (
     <DashboardLayout user={user}>
       <div className="p-6 max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6">Withdraw Funds</h2>
+        <h2 className="text-2xl font-bold mb-6">Deposit Funds</h2>
         <form
           onSubmit={handleWithdraw}
           className="bg-white shadow-md rounded-xl p-6 space-y-5 border"
