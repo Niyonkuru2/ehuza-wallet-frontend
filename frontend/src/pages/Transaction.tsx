@@ -125,8 +125,8 @@ const Transactions: React.FC = () => {
             <FiSearch className="absolute top-2.5 left-3 text-gray-500" />
             <input
               type="text"
-              placeholder="Search..."
-              className="pl-10 pr-4 py-2 border rounded-md text-sm w-full"
+              placeholder="Search Transaction..."
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
