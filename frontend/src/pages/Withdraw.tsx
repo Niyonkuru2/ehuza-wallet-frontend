@@ -96,7 +96,7 @@ const WithdrawPage: React.FC = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              placeholder="Add Description for this withdrawal"
+              placeholder="Add Description for this withdraw"
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
