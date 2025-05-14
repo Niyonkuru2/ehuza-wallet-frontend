@@ -62,7 +62,9 @@ const WithdrawPage: React.FC = () => {
 
   // Error state if user profile fails to load
   if (userError || !user) {
-    return <div className="p-6 text-red-500">Failed to load user profile.</div>;
+    return<div className="flex items-center justify-center h-screen">
+        <p>Fail To Get User profile</p>
+        </div>
   }
 
   return (
