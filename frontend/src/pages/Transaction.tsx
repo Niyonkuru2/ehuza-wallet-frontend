@@ -25,7 +25,7 @@ const Transactions: React.FC = () => {
   // Fetch user profile data
   const {
     data: user,
-    isPending: loadingUser,
+
     isError: errorUser,
   } = useQuery({
     queryKey: ['userProfile'],
@@ -90,7 +90,7 @@ const Transactions: React.FC = () => {
 
     saveAs(blob, 'Transactions.xlsx');
   };
-  if (loadingUser || !user) {
+  if (isPending || !user) {
     return <p className="text-center py-10">Loading user...</p>;
   }
   return (

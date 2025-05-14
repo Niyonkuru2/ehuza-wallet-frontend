@@ -9,6 +9,7 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 const ProfileInfo: React.FC = () => {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fileRef = useRef<File | null>(null); // to store selected file
 
   const { data: user, isPending } = useQuery<UserProfile>({
     queryKey: ['userProfile'],
@@ -53,17 +54,23 @@ const ProfileInfo: React.FC = () => {
       return;
     }
 
-    mutation.mutate({
-      name,
-      email,
-      imageUrl,
-      newPassword: newPassword ? newPassword : undefined,
-    });
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    if (fileRef.current) {
+      formData.append('image', fileRef.current);
+    }
+    if (newPassword) {
+      formData.append('newPassword', newPassword);
+    }
+
+    mutation.mutate(formData);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      fileRef.current = file;
       const reader = new FileReader();
       reader.onload = () => {
         if (typeof reader.result === 'string') {
