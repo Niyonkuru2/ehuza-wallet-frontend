@@ -91,7 +91,11 @@ const Transactions: React.FC = () => {
     saveAs(blob, 'Transactions.xlsx');
   };
   if (!user) {
-    return <p className="text-center py-10">Loading user...</p>;
+    return (
+    <div className="flex items-center justify-center h-screen">
+      <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
+      </div>
+    )
   }
   
 return (
