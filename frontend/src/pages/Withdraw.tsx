@@ -16,7 +16,7 @@ const WithdrawPage: React.FC = () => {
   const [description, setDescription] = useState('');
 
   // Fetch user profile
-  const { data: user, isLoading: isUserLoading, isError: userError } = useQuery<UserProfile>({
+  const { data: user, isPending: isUserLoading, isError: userError } = useQuery<UserProfile>({
     queryKey: ['userProfile'],
     queryFn: getUserProfile,
     staleTime: 5 * 60 * 1000, // Avoid frequent refetch
@@ -47,7 +47,7 @@ const WithdrawPage: React.FC = () => {
       description,
     };
 
-    // Trigger the withdrawal mutation
+    // Trigger the withdraw mutation
     mutate(withdrawalData);
   };
 

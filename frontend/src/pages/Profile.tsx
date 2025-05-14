@@ -10,7 +10,7 @@ const ProfileInfo: React.FC = () => {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { data: profile, isPending } = useQuery<UserProfile>({
+  const { data: user, isPending } = useQuery<UserProfile>({
     queryKey: ['userProfile'],
     queryFn: getUserProfile,
     staleTime: 5 * 60 * 1000,
@@ -25,13 +25,13 @@ const ProfileInfo: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
-    if (profile) {
-      setName(profile.name);
-      setEmail(profile.email);
-      setImageUrl(profile.imageUrl);
-      setJoinedAt(new Date(profile.createdAt).toLocaleDateString());
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+      setImageUrl(user.imageUrl);
+      setJoinedAt(new Date(user.createdAt).toLocaleDateString());
     }
-  }, [profile]);
+  }, [user]);
 
   const mutation = useMutation({
     mutationFn: updateUserProfile,
@@ -74,7 +74,7 @@ const ProfileInfo: React.FC = () => {
     }
   };
 
-  if (isPending || !profile) {
+  if (isPending || !user) {
     return (
       <div className="flex items-center justify-center h-screen">
         <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
@@ -83,7 +83,7 @@ const ProfileInfo: React.FC = () => {
   }
 
   return (
-    <DashboardLayout user={profile}>
+    <DashboardLayout user={user}>
       <div className="w-full max-w-2xl mx-auto mt-10 bg-white rounded-2xl shadow p-6 sm:p-8 px-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <h2 className="text-2xl font-bold text-gray-800">Profile Information</h2>
