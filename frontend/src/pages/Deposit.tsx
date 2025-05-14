@@ -16,7 +16,7 @@ const WithdrawPage: React.FC = () => {
   const [description, setDescription] = useState('');
 
   // Fetch user profile
-  const { data: user, isLoading: isUserLoading, isError: userError } = useQuery<UserProfile>({
+  const { data: user } = useQuery<UserProfile>({
     queryKey: ['userProfile'],
     queryFn: getUserProfile,
     staleTime: 5 * 60 * 1000, // Avoid frequent refetch
@@ -51,20 +51,12 @@ const WithdrawPage: React.FC = () => {
     mutate(withdrawalData);
   };
 
-  // Loading state for user profile
-  if (isUserLoading) {
+  if (!user) {
     return (
       <div className="flex items-center justify-center h-screen">
         <span className="loader inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></span>
       </div>
     );
-  }
-
-  // Error state if user profile fails to load
-  if (userError || !user) {
-    return<div className="flex items-center justify-center h-screen">
-        <p>Fail To Get User profile</p>
-        </div>
   }
 
   return (
