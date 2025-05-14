@@ -3,6 +3,7 @@ import { FiBell, FiMenu, FiX } from 'react-icons/fi';
 import { UserProfile } from '../types/auth';
 import { WalletTransaction } from '../types/wallet';
 import NotificationModal from './NotificationModal';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   user: UserProfile;
@@ -41,7 +42,8 @@ const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick, transact
         </button>
 
         {/* Profile */}
-        <div className="flex items-center gap-2 cursor-pointer">
+        <Link to="/profile">
+        <div className="flex items-center gap-2 cursor-pointer" >
           <img
             src={user.imageUrl || '/noavatar.jpg'}
             alt="Profile"
@@ -51,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({ user, isMenuOpen, onMenuClick, transact
             {user.name}
           </span>
         </div>
-
+        </Link>
         {/* Notification Popup */}
         {showPopup && (
           <div className="absolute top-12 right-0">
