@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const SERVER_URL = axios.create({
-  baseURL: 'http://localhost:5070',
+  baseURL: import.meta.env.VITE_SERVER_URL,
   withCredentials: false,
 });
 
