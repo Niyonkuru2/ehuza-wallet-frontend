@@ -33,7 +33,7 @@ export interface TransactionHistoryResponse {
   page: number;
   totalPages: number;
 }
-
+// chart data interface
 export type ChartData = {
   month: string;
   deposit: number;
