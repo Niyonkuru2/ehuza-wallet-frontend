@@ -31,7 +31,7 @@ const NotificationModal: React.FC<Props> = ({ transactions = [], onClose }) => {
               <FaCheckCircle className="text-green-500 text-xl mt-1" />
               <div>
                 <p className="text-sm">
-                  {tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'} of ${tx.amount} was successful
+                  {tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'} of {tx.amount} RWF was successful
                 </p>
                 <p className="text-xs text-gray-400">
                   {new Date(tx.createdAt).toLocaleDateString('en-US', {
