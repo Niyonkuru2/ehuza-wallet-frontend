@@ -22,7 +22,7 @@ const DashboardCards: React.FC = () => {
 
   const {
     data: latestData,
-    isLoading: loadingLatest,
+    isPending: loadingLatest,
   } = useQuery({
     queryKey: ['transactionHistory', 1],
     queryFn: () => getTransactionHistory(1, 10),
