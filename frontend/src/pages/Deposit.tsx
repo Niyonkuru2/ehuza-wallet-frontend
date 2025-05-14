@@ -51,6 +51,7 @@ const WithdrawPage: React.FC = () => {
     mutate(withdrawalData);
   };
 
+  // Loading state for user profile
   if (!user) {
     return (
       <div className="flex items-center justify-center h-screen">
