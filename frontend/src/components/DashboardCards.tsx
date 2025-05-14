@@ -30,7 +30,7 @@ const DashboardCards: React.FC = () => {
 
   const latest = latestData?.transactions || [];
 
-  // Total deposit and withdraw in the latest transactions
+  // Total deposit and withdraw of latest transactions
   const totalDeposit = latest
     .filter((t) => t.type === 'deposit')
     .reduce((sum, t) => sum + t.amount, 0);
