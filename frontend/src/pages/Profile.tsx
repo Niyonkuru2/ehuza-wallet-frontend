@@ -41,6 +41,7 @@ const ProfileInfo: React.FC = () => {
       setIsEdit(false);
       setNewPassword('');
       setConfirmPassword('');
+      toast.success('Profile updated successfully!');
     },
     onError: (error: AxiosError<{ message: string }>) => {
       const msg = error.response?.data?.message;

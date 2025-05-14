@@ -16,8 +16,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ user, children }) => 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // ✅ Correct syntax for React Query v5
-  const { data, isLoading, isError } = useQuery({
+
+  const { data, } = useQuery({
     queryKey: ['transactions'],
     queryFn: () => getTransactionHistory(1, 10),
   });
@@ -46,8 +46,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ user, children }) => 
         )}
 
         <main className="p-4">
-          {isLoading && <p>Loading transactions...</p>}
-          {isError && <p className="text-red-500">Failed to load transactions.</p>}
           {children}
         </main>
       </div>
@@ -56,3 +54,5 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ user, children }) => 
 };
 
 export default DashboardLayout;
+
+
