@@ -37,10 +37,15 @@ export const getUserProfile = async (): Promise<UserProfile> => {
 };
 
 // Update user profile api call
-export const updateUserProfile = async (data: Partial<UserProfile>): Promise<UserProfile> => {
-  const response = await SERVER_URL.put('/user/update', data);
+export const updateUserProfile = async (data: FormData): Promise<UserProfile> => {
+  const response = await SERVER_URL.put('/user/update', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.updatedProfile;
 };
+
 
 
 
