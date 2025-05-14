@@ -162,7 +162,7 @@ return (
         // Display transactions history
         <>
           {filteredTxs.length === 0 ? (
-            <p className="text-center py-10">No transactions found.</p>
+            <p className="text-center py-10 text-gray-400 italic text-2xl">No transactions found.</p>
           ) : (
             <div className="overflow-x-auto rounded-md border">
               <table className="min-w-full table-auto text-sm block md:table">
@@ -208,7 +208,7 @@ return (
                               : 'bg-red-100 text-red-600'
                           }`}
                         >
-                          {tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'}
+                          {tx.type === 'deposit' ? 'Deposit' : 'Withdraw'}
                         </span>
                       </td>
                     </tr>
